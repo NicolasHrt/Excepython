@@ -3,23 +3,24 @@ from ast import Num
 import xlrd
 import operator
 from fpdf import FPDF
-
-# Python program to create
-# a file explorer in Tkinter
-
-# import all components
-# from the tkinter library
 from tkinter import ttk
 from tkinter import *
-
+from tkinter import messagebox
 # import filedialog module
 from tkinter import filedialog
 
+# Create the root window
+window = Tk()
 
+# Set window title
+window.title('File Explorer')
+
+# Set window size
+window.geometry("410x500")
+
+NumeroTrain=IntVar()
 locExcel=""
-nomDuFichier="TestGui"
 CheminPdf=""
-NumeroTrain=2
 """locExcel=input("Chemin du excel : ")
 nomDuFichier=input("Non du pdf : ")
 CheminPdf=input("Chemin du pdf : ")
@@ -134,7 +135,7 @@ def EcrirePdfTrainDe2(locExcel):
         if j==len(DsImpressionData):
             monPdf.cell(200 ,5, txt="------------------- {CompteurProduit} visuel {Visuel1}/{Visuel2} -------------------".format(CompteurProduit=ListecompteurProduit[compteurPageProduit],Visuel1=ligne[5],Visuel2=ligne[7]), ln=1, align="C")
      
-    monPdf.output("{CheminPdf}/{nomDuFichier}.pdf".format(nomDuFichier=nomDuFichier,CheminPdf=CheminPdf))
+    monPdf.output("{CheminPdf}/{nomDuFichier}.pdf".format(nomDuFichier=textboxfile.get(),CheminPdf=CheminPdf))
 
 
 
@@ -197,41 +198,50 @@ def EcrirePdfTrainDe3(locExcel):
         if j==len(DsImpressionData):
            monPdf.cell(200 ,5, txt="-------------------{CompteurProduit} visuel {Visuel1}/{Visuel2}/{Visuel3}-------------------".format(CompteurProduit=ListecompteurProduit[compteurPageProduit],Visuel1=ligne[5],Visuel2=ligne[7],Visuel3=ligne[9]), ln=1, align="C")
      
-    monPdf.output("{CheminPdf}/{nomDuFichier}.pdf".format(nomDuFichier=nomDuFichier,CheminPdf=CheminPdf))
+    monPdf.output("{CheminPdf}/{nomDuFichier}.pdf".format(nomDuFichier=textboxfile.get(),CheminPdf=CheminPdf))
 
 def fonction_Principale(locExcel):
-    if NumeroTrain==2:
+    nomdufichier=textboxfile.get()
+    if locExcel=="":
+        messagebox.showerror("Error", "Vous n'avez pas importé de fichier excel")
+    
+    elif CheminPdf=="":
+        messagebox.showerror("Error", "Vous n'avez pas rentré de chemin de sortie")
+    
+    elif nomdufichier=="":
+        messagebox.showerror("Error", "Vous n'avez rentré de nom pour le fichier")
+    
+
+    if NumeroTrain.get()==2:
         EcrirePdfTrainDe2(locExcel)
+        messagebox.showinfo("Succes", "Votre fichier a été exporté avec succès")
         print("Train de 2")
         
-    elif NumeroTrain==3:
+    elif NumeroTrain.get()==3:
         EcrirePdfTrainDe3(locExcel)
+        messagebox.showinfo("Succes", "Votre fichier a été exporté avec succès")
         print("Train de 3")
 
-    elif NumeroTrain==4:
+    elif NumeroTrain.get()==4:
+        messagebox.showinfo("Succes", "Votre fichier a été exporté avec succès")
         print("Train de 4")
 
-    elif NumeroTrain==5:
+    elif NumeroTrain.get()==5:
+        messagebox.showinfo("Succes", "Votre fichier a été exporté avec succès")
         print("Train de 5")
-    print(nomDuFichier)
 
+    else:
+        messagebox.showerror("Error", "Vous n'avez pas selectionné de train")
 																								
-# Create the root window
-window = Tk()
 
-# Set window title
-window.title('File Explorer')
-
-# Set window size
-window.geometry("250x250")
 
 #Set window background color
 window.config(background = "white")
 
 # Create a File Explorer label
 label_file_explorer = Label(window,
-							text = "Selectionner un fichier excel à exporter",
-							width = 32, height = 4,
+							text = "Selectionner un fichier excel à exporter :",
+							width = 50, height = 4,
 							fg = "blue")
 
 	
@@ -240,15 +250,33 @@ button_exploreExcel = ttk.Button(window,
 						command = BrowseExcel)
 
 label_file_output = Label(window,
-							text = "Selectionner un Chemin de sortie",
-							width = 32, height = 4,
+							text = "Selectionner un Chemin de sortie :",
+							width = 50, height = 4,
 							fg = "blue")                        
 
 button_outputPdf = ttk.Button(window,
 						text = "Dossier de destination",
 	                    command = OutputPdf) 
 
-button_exit = ttk.Button(window,
+label_file_filename = Label(window,
+							text = "Veuillez choisir un nom pour le fichier pdf : ",
+							width = 50, height = 4,
+							fg = "black")  
+
+textboxfile = ttk.Entry(window, width=25, justify='center')
+
+
+label_TrainRadio = Label(window,
+							text = "Veuillez choisir un train : ",
+							width = 50, height = 4,
+							fg = "black")  
+
+checkbox1 = ttk.Radiobutton(window, text='train de 2', variable=NumeroTrain, value=2)
+checkbox2 = ttk.Radiobutton(window, text='train de 3', variable=NumeroTrain, value=3)
+checkbox3 = ttk.Radiobutton(window, text='train de 4', variable=NumeroTrain, value=4)
+checkbox4 = ttk.Radiobutton(window, text='train de 5', variable=NumeroTrain, value=5)
+
+button_Exporter = ttk.Button(window,
 					text = "Exporter",
 	                command = lambda: fonction_Principale(locExcel))
 
@@ -264,7 +292,18 @@ label_file_output.grid(column=0, row=3)
 
 button_outputPdf.grid(column=0,row=4)
 
-button_exit.grid(column = 0,row = 5)
+label_file_filename.grid(column=0,row=5)
+
+textboxfile.grid(column=0, row=6)
+
+label_TrainRadio.grid(column=0, row=7)
+
+checkbox1.grid(column=0, row=8)
+checkbox2.grid(column=0, row=9)
+checkbox3.grid(column=0, row=10)
+checkbox4.grid(column=0, row=11)
+
+button_Exporter.grid(column = 0,row = 12)
 
 # Let the window wait for any events
 window.mainloop()
