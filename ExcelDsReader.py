@@ -21,12 +21,8 @@ window.geometry("410x500")
 NumeroTrain=IntVar()
 locExcel=""
 CheminPdf=""
-"""locExcel=input("Chemin du excel : ")
-nomDuFichier=input("Non du pdf : ")
-CheminPdf=input("Chemin du pdf : ")
-NumeroTrain=int(input("Rentre un numero de train : "))"""
 
-# Function for opening the
+# Function for opening thes
 # file explorer window
 def BrowseExcel():
     global locExcel
@@ -43,7 +39,7 @@ def OutputPdf():
 										title = "Select a File",)
 
     label_file_output.configure(text="File Opened: "+CheminPdf)
-	
+
 def TrierExcel(locExcel):
     # To open Workbook
     wb = xlrd.open_workbook(locExcel)
@@ -200,6 +196,71 @@ def EcrirePdfTrainDe3(locExcel):
      
     monPdf.output("{CheminPdf}/{nomDuFichier}.pdf".format(nomDuFichier=textboxfile.get(),CheminPdf=CheminPdf))
 
+
+def EcrirePdfTrainDe4(locExcel):
+    tmpVisuel1=""
+    tmpVisuel2=""
+    tmpVisuel3=""
+    tmpVisuel4=""
+    DsImpressionData=TrierExcel(locExcel)
+    monPdf = FPDF()
+    monPdf.add_page()
+    monPdf.set_font("Arial", size=10)
+    compteurPage=0
+    compteurPageProduit=0
+
+    compteurProduit=0
+    ListecompteurProduit=[]
+    i=0
+    for produit in DsImpressionData:
+        if (tmpVisuel1!=produit[5] or tmpVisuel2!=produit[7] or tmpVisuel3!=produit[9] or tmpVisuel4!=produit[11]) and i!=0:
+            ListecompteurProduit.append(compteurProduit)  
+            compteurProduit=0
+
+        tmpVisuel1=produit[5]
+        tmpVisuel2=produit[7]
+        tmpVisuel3=produit[9]
+        compteurProduit+=1
+        i+=1
+        if i==len(DsImpressionData):
+            ListecompteurProduit.append(compteurProduit)  
+    j=0
+
+    for ligne in DsImpressionData:
+        
+        if (tmpVisuel1!=ligne[5] or tmpVisuel2!=ligne[7] or tmpVisuel3!=ligne[9] or tmpVisuel4!=produit[11]) and j!=0:
+            monPdf.cell(200 ,5, txt="-------------------{CompteurProduit} visuel {Visuel1}/{Visuel2}/{Visuel3}/{Visuel4}-------------------".format(CompteurProduit=ListecompteurProduit[compteurPageProduit],Visuel1=tmpVisuel1,Visuel2=tmpVisuel2,Visuel3=tmpVisuel3,Visuel4=tmpVisuel4), ln=1, align="C")
+            compteurPage=0
+            compteurPageProduit+=1
+            
+            monPdf.add_page()
+
+        monPdf.cell(200, 5, txt= "{TrainId}".format(TrainId=ligne[0]), ln=1, align="L")
+        monPdf.cell(200, 5, txt= "{CommunePanneau}".format(CommunePanneau=ligne[1]), ln=1, align="L")
+        monPdf.cell(200, 5, txt= "{AdressePanneau}".format(AdressePanneau=ligne[2]), ln=1, align="L")
+        monPdf.cell(200, 5, txt= "{Afficheur}".format(Afficheur=ligne[3]), ln=1, align="L")
+        monPdf.cell(200, 5, txt= "Annonceur1 : {Annonceur1} Visuel1 : {Visuel1}".format(Annonceur1=ligne[4],Visuel1=ligne[5]), ln=1, align="L")
+        monPdf.cell(200, 5, txt= "Annonceur2 : {Annonceur2} Visuel2 : {Visuel2}".format(Annonceur2=ligne[6],Visuel2=ligne[7]), ln=1, align="L")
+        monPdf.cell(200, 5, txt= "Annonceur3 : {Annonceur3} Visuel3 : {Visuel3}".format(Annonceur3=ligne[8],Visuel3=ligne[9]), ln=1, align="L")
+        monPdf.cell(200, 5, txt= "Annonceur4 : {Annonceur4} Visuel4 : {Visuel4}".format(Annonceur4=ligne[10],Visuel4=ligne[11]), ln=1, align="L")
+        monPdf.cell(200, 5, txt= "", ln=1, align="L")
+        compteurPage+=1
+        if compteurPage==5:
+            monPdf.cell(200 ,5, txt="-------------------{CompteurProduit} visuel {Visuel1}/{Visuel2}/{Visuel3}/{Visuel4}-------------------".format(CompteurProduit=ListecompteurProduit[compteurPageProduit],Visuel1=ligne[5],Visuel2=ligne[7],Visuel3=ligne[9],Visuel4=ligne[11]), ln=1, align="C")
+            compteurPage=0
+            monPdf.add_page()
+
+        tmpVisuel1=ligne[5]
+        tmpVisuel2=ligne[7]
+        tmpVisuel3=ligne[9]
+        tmpVisuel4=ligne[11]
+        j+=1    
+
+        if j==len(DsImpressionData):
+           monPdf.cell(200 ,5, txt="-------------------{CompteurProduit} visuel {Visuel1}/{Visuel2}/{Visuel3}/{Visuel4}-------------------".format(CompteurProduit=ListecompteurProduit[compteurPageProduit],Visuel1=ligne[5],Visuel2=ligne[7],Visuel3=ligne[9],Visuel4=ligne[11]), ln=1, align="C")
+     
+    monPdf.output("{CheminPdf}/{nomDuFichier}.pdf".format(nomDuFichier=textboxfile.get(),CheminPdf=CheminPdf)) 
+
 def fonction_Principale(locExcel):
     nomdufichier=textboxfile.get()
     if locExcel=="":
@@ -215,14 +276,14 @@ def fonction_Principale(locExcel):
     if NumeroTrain.get()==2:
         EcrirePdfTrainDe2(locExcel)
         messagebox.showinfo("Succes", "Votre fichier a été exporté avec succès")
-        print("Train de 2")
-        
+        print("Train de 2")       
     elif NumeroTrain.get()==3:
         EcrirePdfTrainDe3(locExcel)
         messagebox.showinfo("Succes", "Votre fichier a été exporté avec succès")
         print("Train de 3")
 
     elif NumeroTrain.get()==4:
+        EcrirePdfTrainDe4(locExcel)
         messagebox.showinfo("Succes", "Votre fichier a été exporté avec succès")
         print("Train de 4")
 
@@ -235,41 +296,43 @@ def fonction_Principale(locExcel):
 																								
 
 
-#Set window background color
+
+
+
 window.config(background = "white")
 
 # Create a File Explorer label
 label_file_explorer = Label(window,
-							text = "Selectionner un fichier excel à exporter :",
-							width = 50, height = 4,
-							fg = "blue")
+                            text = "Selectionner un fichier excel à exporter :",
+                            width = 50, height = 4,
+                            fg = "blue")
 
-	
+    
 button_exploreExcel = ttk.Button(window,
-						text = "Importer",
-						command = BrowseExcel)
+                        text = "Importer",
+                        command = BrowseExcel)
 
 label_file_output = Label(window,
-							text = "Selectionner un Chemin de sortie :",
-							width = 50, height = 4,
-							fg = "blue")                        
+                            text = "Selectionner un Chemin de sortie :",
+                            width = 50, height = 4,
+                            fg = "blue")                        
 
 button_outputPdf = ttk.Button(window,
-						text = "Dossier de destination",
-	                    command = OutputPdf) 
+                        text = "Dossier de destination",
+                        command = OutputPdf) 
 
 label_file_filename = Label(window,
-							text = "Veuillez choisir un nom pour le fichier pdf : ",
-							width = 50, height = 4,
-							fg = "black")  
+                            text = "Veuillez choisir un nom pour le fichier pdf : ",
+                            width = 50, height = 4,
+                            fg = "black")  
 
 textboxfile = ttk.Entry(window, width=25, justify='center')
 
 
 label_TrainRadio = Label(window,
-							text = "Veuillez choisir un train : ",
-							width = 50, height = 4,
-							fg = "black")  
+                            text = "Veuillez choisir un train : ",
+                            width = 50, height = 4,
+                            fg = "black")  
 
 checkbox1 = ttk.Radiobutton(window, text='train de 2', variable=NumeroTrain, value=2)
 checkbox2 = ttk.Radiobutton(window, text='train de 3', variable=NumeroTrain, value=3)
@@ -277,8 +340,8 @@ checkbox3 = ttk.Radiobutton(window, text='train de 4', variable=NumeroTrain, val
 checkbox4 = ttk.Radiobutton(window, text='train de 5', variable=NumeroTrain, value=5)
 
 button_Exporter = ttk.Button(window,
-					text = "Exporter",
-	                command = lambda: fonction_Principale(locExcel))
+                    text = "Exporter",
+                    command = lambda: fonction_Principale(locExcel))
 
 # Grid method is chosen for placing
 # the widgets at respective positions
@@ -303,25 +366,8 @@ checkbox2.grid(column=0, row=9)
 checkbox3.grid(column=0, row=10)
 checkbox4.grid(column=0, row=11)
 
-button_Exporter.grid(column = 0,row = 12)
+button_Exporter.grid(column = 0,row = 13)
+
 
 # Let the window wait for any events
 window.mainloop()
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-"""button = ttk.Button(tkWindow,
-	text = 'Exporter',
-	command = lambda: fonction_Principale(locExcel))   
-button.pack()""" 
