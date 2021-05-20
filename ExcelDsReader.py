@@ -2,38 +2,47 @@
 from ast import Num
 import xlrd
 import operator
-from tkinter import *
-from tkinter import messagebox
-from tkinter import ttk
-import tkinter as tk
 from fpdf import FPDF
 
+# Python program to create
+# a file explorer in Tkinter
 
-tkWindow = Tk()  
-tkWindow.geometry('400x150')  
-tkWindow.title('PythonExamples.org - Tkinter Example')
+# import all components
+# from the tkinter library
+from tkinter import ttk
+from tkinter import *
 
-
-nameentryframe = Frame(tkWindow, background = 'BLACK', borderwidth = 1)
-nameentry = Entry(nameentryframe)
-nameentryframe.pack()
-nameentry.pack()    
- 
-  
+# import filedialog module
+from tkinter import filedialog
 
 
-
-locExcel="/Users/matthieugrandpierre/Documents/ExcelDSreader/AGIL PRINT SEM21 train de 2.xlsx"
-nomDuFichier="test"
-CheminPdf="/Users/matthieugrandpierre/Documents"
+locExcel=""
+nomDuFichier="TestGui"
+CheminPdf=""
 NumeroTrain=2
-"""l"ocExcel=input("Chemin du excel : ")
+"""locExcel=input("Chemin du excel : ")
 nomDuFichier=input("Non du pdf : ")
 CheminPdf=input("Chemin du pdf : ")
 NumeroTrain=int(input("Rentre un numero de train : "))"""
 
+# Function for opening the
+# file explorer window
+def BrowseExcel():
+    global locExcel
+    locExcel = filedialog.askopenfilename(initialdir = "/",
+                                            title = "Select a File",
+                                            filetypes=[("Excel files", ".xlsx .xls")])
+        
+    label_file_explorer.configure(text="File Opened: "+locExcel)
 
 
+def OutputPdf():
+    global CheminPdf
+    CheminPdf = filedialog.askdirectory(initialdir = "/",
+										title = "Select a File",)
+
+    label_file_output.configure(text="File Opened: "+CheminPdf)
+	
 def TrierExcel(locExcel):
     # To open Workbook
     wb = xlrd.open_workbook(locExcel)
@@ -186,7 +195,7 @@ def EcrirePdfTrainDe3(locExcel):
         j+=1    
 
         if j==len(DsImpressionData):
-            monPdf.cell(200 ,5, txt="-------------------{CompteurProduit} visuel {Visuel1}/{Visuel2}/{Visuel3}-------------------".format(CompteurProduit=ListecompteurProduit[compteurPageProduit],Visuel1=ligne[5],Visuel2=ligne[7],Visuel3=ligne[9]), ln=1, align="C")
+           monPdf.cell(200 ,5, txt="-------------------{CompteurProduit} visuel {Visuel1}/{Visuel2}/{Visuel3}-------------------".format(CompteurProduit=ListecompteurProduit[compteurPageProduit],Visuel1=ligne[5],Visuel2=ligne[7],Visuel3=ligne[9]), ln=1, align="C")
      
     monPdf.output("{CheminPdf}/{nomDuFichier}.pdf".format(nomDuFichier=nomDuFichier,CheminPdf=CheminPdf))
 
@@ -204,20 +213,76 @@ def fonction_Principale(locExcel):
 
     elif NumeroTrain==5:
         print("Train de 5")
-    messagebox.showinfo('Succès', 'Votre fichier a été exporté en pdf avec succès')
     print(nomDuFichier)
 
+																								
+# Create the root window
+window = Tk()
+
+# Set window title
+window.title('File Explorer')
+
+# Set window size
+window.geometry("250x250")
+
+#Set window background color
+window.config(background = "white")
+
+# Create a File Explorer label
+label_file_explorer = Label(window,
+							text = "Selectionner un fichier excel à exporter",
+							width = 32, height = 4,
+							fg = "blue")
+
+	
+button_exploreExcel = ttk.Button(window,
+						text = "Importer",
+						command = BrowseExcel)
+
+label_file_output = Label(window,
+							text = "Selectionner un Chemin de sortie",
+							width = 32, height = 4,
+							fg = "blue")                        
+
+button_outputPdf = ttk.Button(window,
+						text = "Dossier de destination",
+	                    command = OutputPdf) 
+
+button_exit = ttk.Button(window,
+					text = "Exporter",
+	                command = lambda: fonction_Principale(locExcel))
+
+# Grid method is chosen for placing
+# the widgets at respective positions
+# in a table like structure by
+# specifying rows and columns
+label_file_explorer.grid(column = 0, row = 1)
+
+button_exploreExcel.grid(column = 0, row = 2)
+
+label_file_output.grid(column=0, row=3)
+
+button_outputPdf.grid(column=0,row=4)
+
+button_exit.grid(column = 0,row = 5)
+
+# Let the window wait for any events
+window.mainloop()
 
 
-def test():
-    nomDuFichier=nameentry.get()
-    print (nomDuFichier)
 
 
 
 
-button = ttk.Button(tkWindow,
+
+
+
+
+
+
+
+
+"""button = ttk.Button(tkWindow,
 	text = 'Exporter',
 	command = lambda: fonction_Principale(locExcel))   
-button.pack() 
-tkWindow.mainloop()
+button.pack()""" 
