@@ -16,7 +16,7 @@ window = Tk()
 window.title("ExcelDsPrintConverter")
 
 # Set window size
-window.geometry("1000x500")
+window.geometry("1100x1000")
 
 NumeroTrain=IntVar()
 locExcel=""
@@ -45,34 +45,84 @@ def TrierExcel(locExcel):
     sheet = wb.sheet_by_index(0)
     sheet.cell_value(0, 0)
     DsimpresionData=[]
-        
+    errorChampVide()    
     for i in range(1, sheet.nrows):   
         row = sheet.row_slice(i)        
-        #TrainId = row[int(ColonneTrainId.get())-1].value  
-        TrainId = row[0].value     
-        CommunePanneau = row[4].value       
-        AdressePanneau = row[5].value   
-        Afficheur = row[9].value
-        Annonceur1 = row[13].value
-        Annonceur2= row[14].value
-        Annonceur3= row[15].value
-        Annonceur4= row[16].value
-        Annonceur5= row[17].value
-        Visuel1= row[20].value
-        Visuel2= row[23].value
-        Visuel3= row[26].value
-        Visuel4= row[29].value
-        Visuel5= row[32].value
+        TrainId = row[int(ColonneTrainId.get())-1].value  
+        #TrainId = row[0].value     
+        CommunePanneau = row[int(ColonneCommune.get())-1].value       
+        AdressePanneau = row[int(ColonneAdresse.get())-1].value   
+        Afficheur = row[int(ColonneAfficheur.get())-1].value
+        Annonceur1 = row[int(ColonneAnnonceur1.get())-1].value
+        Annonceur2= row[int(ColonneAnnonceur2.get())-1].value
+        Visuel1= row[int(ColonneVisuel1.get())-1].value
+        Visuel2= row[int(ColonneVisuel2.get())-1].value
 
-        Produit=[TrainId,CommunePanneau,AdressePanneau,Afficheur,Annonceur1,Visuel1,Annonceur2,Visuel2,Annonceur3,Visuel3,Annonceur4,Visuel4,Annonceur5,Visuel5]
+        if NumeroTrain.get()==2:
+            Produit=[TrainId,CommunePanneau,AdressePanneau,Afficheur,Annonceur1,Visuel1,Annonceur2,Visuel2]
+
+
+        if NumeroTrain.get()==3:
+            Annonceur3= row[int(ColonneAnnonceur3.get())-1].value
+            Visuel3= row[int(ColonneVisuel3.get())-1].value
+            Produit=[TrainId,CommunePanneau,AdressePanneau,Afficheur,Annonceur1,Visuel1,Annonceur2,Visuel2,Annonceur3,Visuel3]
+
+        if NumeroTrain.get()==4:
+            Annonceur3= row[int(ColonneAnnonceur3.get())-1].value
+            Annonceur4= row[int(ColonneAnnonceur4.get())-1].value
+            Visuel3= row[int(ColonneVisuel3.get())-1].value
+            Visuel4= row[int(ColonneVisuel4.get())-1].value
+            Produit=[TrainId,CommunePanneau,AdressePanneau,Afficheur,Annonceur1,Visuel1,Annonceur2,Visuel2,Annonceur3,Visuel3,Annonceur4,Visuel4]
+
+        if NumeroTrain.get()==5:
+            Annonceur3= row[int(ColonneAnnonceur3.get())-1].value
+            Annonceur4= row[int(ColonneAnnonceur4.get())-1].value
+            Annonceur5= row[int(ColonneAnnonceur5.get())-1].value
+            Visuel3= row[int(ColonneVisuel3.get())-1].value
+            Visuel4= row[int(ColonneVisuel4.get())-1].value
+            Visuel5= row[int(ColonneVisuel5.get())-1].value
+            Produit=[TrainId,CommunePanneau,AdressePanneau,Afficheur,Annonceur1,Visuel1,Annonceur2,Visuel2,Annonceur3,Visuel3,Annonceur4,Visuel4,Annonceur5,Visuel5]
+    
         DsimpresionData.append(Produit) #Tableau de caractéristique des produits
 
-        
-    DsimpresionDataTrier = sorted(DsimpresionData, key = operator.itemgetter(5,7,9,11,13))
+    DsimpresionDataTrier=fonctionDeTrie(DsimpresionData)
 
+
+    print(DsimpresionDataTrier)
     return DsimpresionDataTrier
 
+def errorChampVide():
+    if ColonneTrainId.get()=="":messagebox.showerror("Error", "Vous n'avez pas rempli le champ trainId")
+    elif ColonneCommune.get()=="":messagebox.showerror("Error", "Vous n'avez pas rempli le champ Commune du panneau")
+    elif ColonneAdresse.get()=="":messagebox.showerror("Error", "Vous n'avez pas rempli le champ Adresse du panneau")
+    elif ColonneAfficheur.get()=="":messagebox.showerror("Error", "Vous n'avez pas rempli le champ Afficheur")
+    elif ColonneAnnonceur1.get()=="":messagebox.showerror("Error", "Vous n'avez pas rempli le champ Annonceur 1")
+    elif ColonneVisuel1.get()=="":messagebox.showerror("Error", "Vous n'avez pas rempli le champ Visuel 1")
+    elif ColonneAnnonceur2.get()=="":messagebox.showerror("Error", "Vous n'avez pas rempli le champ Annonceur 2")
+    elif ColonneVisuel2.get()=="":messagebox.showerror("Error", "Vous n'avez pas rempli le champ Visuel 2")
+    elif (NumeroTrain.get()==3 or NumeroTrain.get()==4 or NumeroTrain.get()==5)  and ColonneAnnonceur3.get()=="":messagebox.showerror("Error", "Vous n'avez pas rempli le champ Annonceur 3")
+    elif (NumeroTrain.get()==3 or NumeroTrain.get()==4 or NumeroTrain.get()==5) and ColonneVisuel3.get()=="":messagebox.showerror("Error", "Vous n'avez pas rempli le champ Visuel 3")
+    elif (NumeroTrain.get()==4 or NumeroTrain.get()==5) and ColonneAnnonceur4.get()=="":messagebox.showerror("Error", "Vous n'avez pas rempli le champ Annonceur 4")
+    elif (NumeroTrain.get()==4 or NumeroTrain.get()==5 )and ColonneVisuel4.get()=="":messagebox.showerror("Error", "Vous n'avez pas rempli le champ Visuel 4")
+    elif NumeroTrain.get()==5 and ColonneAnnonceur5.get()=="":messagebox.showerror("Error", "Vous n'avez pas rempli le champ Annonceur 5")
+    elif NumeroTrain.get()==5 and ColonneVisuel5.get()=="":messagebox.showerror("Error", "Vous n'avez pas rempli le champ Visuel 5")
+    else:pass
 
+def fonctionDeTrie(DsimpresionData):
+
+    if NumeroTrain.get()==2:  
+        DsimpresionDataTrier = sorted(DsimpresionData, key = operator.itemgetter(5,7))
+    
+    if NumeroTrain.get()==3:  
+        DsimpresionDataTrier = sorted(DsimpresionData, key = operator.itemgetter(5,7,9))
+    
+    if NumeroTrain.get()==4:  
+        DsimpresionDataTrier = sorted(DsimpresionData, key = operator.itemgetter(5,7,9,11))
+    
+    if NumeroTrain.get()==5:  
+        DsimpresionDataTrier = sorted(DsimpresionData, key = operator.itemgetter(5,7,9,11,13))
+    return(DsimpresionDataTrier)
+     
 def EcrirePdfTrainDe2(locExcel):
     tmpVisuel1=""
     tmpVisuel2=""
@@ -341,7 +391,7 @@ def fonction_Principale(locExcel):
         messagebox.showerror("Error", "Vous n'avez rentré de nom pour le fichier")
     
 
-    if NumeroTrain.get()==2:
+    elif NumeroTrain.get()==2:
         EcrirePdfTrainDe2(locExcel)
         messagebox.showinfo("Succes", "Votre fichier a été exporté avec succès")
         print("Train de 2")       
@@ -363,14 +413,42 @@ def fonction_Principale(locExcel):
     else:
         messagebox.showerror("Error", "Vous n'avez pas selectionné de train")
 																								
-
+def reset():
+    ColonneTrainId.delete(0,END)
+    ColonneTrainId.insert(-1, '1')
+    ColonneCommune.delete(0,END)
+    ColonneCommune.insert(-1, '5')
+    ColonneAdresse.delete(0,END)
+    ColonneAdresse.insert(-1, '6')
+    ColonneAfficheur.delete(0,END)
+    ColonneAfficheur.insert(-1, '10')
+    ColonneAnnonceur1.delete(0,END)
+    ColonneAnnonceur1.insert(-1, '14')
+    ColonneVisuel1.delete(0,END)
+    ColonneVisuel1.insert(-1, '21')
+    ColonneAnnonceur2.delete(0,END)
+    ColonneAnnonceur2.insert(-1, '15')
+    ColonneVisuel2.delete(0,END)
+    ColonneVisuel2.insert(-1, '24')
+    ColonneAnnonceur3.delete(0,END)
+    ColonneAnnonceur3.insert(-1, '16')
+    ColonneVisuel3.delete(0,END)
+    ColonneVisuel3.insert(-1, '27')
+    ColonneAnnonceur4.delete(0,END)
+    ColonneAnnonceur4.insert(-1, '17')
+    ColonneVisuel4.delete(0,END)
+    ColonneVisuel4.insert(-1, '30')
+    ColonneAnnonceur5.delete(0,END)
+    ColonneAnnonceur5.insert(-1, '18')
+    ColonneVisuel5.delete(0,END)
+    ColonneVisuel5.insert(-1, '33')     
 
 window.config(background = "white")
 
 # Create a File Explorer label
 label_file_explorer = Label(window,
                             text = "Selectionner un fichier excel à exporter :",
-                            width = 50, height = 4,
+                            width = 70, height = 4,
                             fg = "blue")
 
     
@@ -410,17 +488,106 @@ button_Exporter = ttk.Button(window,
                     command = lambda: fonction_Principale(locExcel))
 
 label_ColonneTrainId = Label(window,
-                            text = "Train id :  ",
+                            text = "Position train id :  ",
                             width = 15, height = 4,
                             fg = "black")  
 ColonneTrainId = ttk.Entry(window, width=10, justify='center')
+ColonneTrainId.insert(-1, '1')
 
 label_ColonneCommune = Label(window,
-                            text = "Commune du panneau :  ",
-                            width = 20 , height = 4,
+                            text = "Position commune du panneau :  ",
+                            width = 25 , height = 4,
                             fg = "black")  
 ColonneCommune= ttk.Entry(window, width=10, justify='center')
+ColonneCommune.insert(-1, '5')
 
+label_ColonneAdresse = Label(window,
+                            text = "Position addresse du panneau :  ",
+                            width = 25 , height = 4,
+                            fg = "black")  
+ColonneAdresse= ttk.Entry(window, width=10, justify='center')
+ColonneAdresse.insert(-1, '6')
+
+label_ColonneAfficheur = Label(window,
+                            text = "Position afficheur :  ",
+                            width = 20 , height = 4,
+                            fg = "black")  
+ColonneAfficheur= ttk.Entry(window, width=10, justify='center')
+ColonneAfficheur.insert(-1, '10')
+
+label_ColonneAnnonceur1 = Label(window,
+                            text = "Position annonceur 1 :  ",
+                            width = 20 , height = 4,
+                            fg = "black")  
+ColonneAnnonceur1= ttk.Entry(window, width=10, justify='center')
+ColonneAnnonceur1.insert(-1, '14')
+
+label_ColonneVisuel1 = Label(window,
+                            text = "Position visuel 1 :  ",
+                            width = 20 , height = 4,
+                            fg = "black")  
+ColonneVisuel1= ttk.Entry(window, width=10, justify='center')
+ColonneVisuel1.insert(-1, '21')
+
+label_ColonneAnnonceur2 = Label(window,
+                            text = "Position annonceur 2 :  ",
+                            width = 20 , height = 4,
+                            fg = "black")  
+ColonneAnnonceur2= ttk.Entry(window, width=10, justify='center')
+ColonneAnnonceur2.insert(-1, '15')
+
+label_ColonneVisuel2 = Label(window,
+                            text = "Position visuel 2 :  ",
+                            width = 20 , height = 4,
+                            fg = "black")  
+ColonneVisuel2= ttk.Entry(window, width=10, justify='center')
+ColonneVisuel2.insert(-1, '24')
+
+label_ColonneAnnonceur3 = Label(window,
+                            text = "Position annonceur 3 :  ",
+                            width = 20 , height = 4,
+                            fg = "black")  
+ColonneAnnonceur3= ttk.Entry(window, width=10, justify='center')
+ColonneAnnonceur3.insert(-1, '16')
+
+label_ColonneVisuel3 = Label(window,
+                            text = "Position visuel 3 :  ",
+                            width = 20 , height = 4,
+                            fg = "black")  
+ColonneVisuel3= ttk.Entry(window, width=10, justify='center')
+ColonneVisuel3.insert(-1, '27')
+
+label_ColonneAnnonceur4 = Label(window,
+                            text = "Position annonceur 4 :  ",
+                            width = 20 , height = 4,
+                            fg = "black")  
+ColonneAnnonceur4= ttk.Entry(window, width=10, justify='center')
+ColonneAnnonceur4.insert(-1, '17')
+
+label_ColonneVisuel4 = Label(window,
+                            text = "Position visuel 4 :  ",
+                            width = 20 , height = 4,
+                            fg = "black")  
+ColonneVisuel4= ttk.Entry(window, width=10, justify='center')
+ColonneVisuel4.insert(-1, '30')
+
+label_ColonneAnnonceur5 = Label(window,
+                            text = "Position annonceur 5 :  ",
+                            width = 20 , height = 4,
+                            fg = "black")  
+ColonneAnnonceur5= ttk.Entry(window, width=10, justify='center')
+ColonneAnnonceur5.insert(-1, '18')
+
+label_ColonneVisuel5 = Label(window,
+                            text = "Position visuel 5 :  ",
+                            width = 20 , height = 4,
+                            fg = "black")  
+ColonneVisuel5= ttk.Entry(window, width=10, justify='center')
+ColonneVisuel5.insert(-1, '33')
+
+button_Reset = ttk.Button(window,
+                    text = "Réinisialiser la configuration",
+                    command = reset)
 # Grid method is chosen for placing
 # the widgets at respective positions
 # in a table like structure by
@@ -444,14 +611,50 @@ checkbox2.grid(column=0, row=8)
 checkbox3.grid(column=0, row=9)
 checkbox4.grid(column=0, row=10)
 
-button_Exporter.grid(column = 0,row = 11,ipady=10, ipadx=10)
+button_Exporter.grid(column = 0,row = 11,ipady=20, ipadx=20)
 
 label_ColonneTrainId.grid(column=1,row=0)
 ColonneTrainId.grid(column=1,row=1)
 
-label_ColonneCommune.grid(column=2,row=0)
-ColonneCommune.grid(column=2,row=1)
+label_ColonneCommune.grid(column=1,row=2)
+ColonneCommune.grid(column=1,row=3)
 
+label_ColonneAdresse.grid(column=1, row=4)
+ColonneAdresse.grid(column=1, row=5)
 
+label_ColonneAfficheur.grid(column=1,row=6)
+ColonneAfficheur.grid(column=1,row=7)
+
+label_ColonneAnnonceur1.grid(column=1,row=8)
+ColonneAnnonceur1.grid(column=1,row=9)
+
+label_ColonneVisuel1.grid(column=2,row=8)
+ColonneVisuel1.grid(column=2,row=9)
+
+label_ColonneAnnonceur2.grid(column=1,row=10)
+ColonneAnnonceur2.grid(column=1,row=11)
+
+label_ColonneVisuel2.grid(column=2,row=10)
+ColonneVisuel2.grid(column=2,row=11)
+
+label_ColonneAnnonceur3.grid(column=1,row=12)
+ColonneAnnonceur3.grid(column=1,row=13)
+
+label_ColonneVisuel3.grid(column=2,row=12)
+ColonneVisuel3.grid(column=2,row=13)
+
+label_ColonneAnnonceur4.grid(column=1,row=14)
+ColonneAnnonceur4.grid(column=1,row=15)
+
+label_ColonneVisuel4.grid(column=2,row=14)
+ColonneVisuel4.grid(column=2,row=15)
+
+label_ColonneAnnonceur5.grid(column=1,row=16)
+ColonneAnnonceur5.grid(column=1,row=17)
+
+label_ColonneVisuel5.grid(column=2,row=16)
+ColonneVisuel5.grid(column=2,row=17)
+
+button_Reset.grid(column=2,row=1,ipady=15, ipadx=15)
 # Let the window wait for any events
 window.mainloop()
