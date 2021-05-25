@@ -157,7 +157,7 @@ def EcrirePdfTrainDe1(locExcel):
     for produit in DsImpressionData:
         if tmpVisuel1!=produit[5] and i!=0:
             ListecompteurProduit.append(compteurProduit)
-            monPdf.cell(200 ,5, txt="------------------- {CompteurProduit} visuel {Visuel1} -------------------".format(CompteurProduit=compteurProduit,Visuel1=produit[5]), ln=1, align="C")  
+            monPdf.cell(200 ,5, txt="------------------- {CompteurProduit} visuel {Visuel1} -------------------".format(CompteurProduit=compteurProduit,Visuel1=tmpVisuel1), ln=1, align="C")  
             compteurProduit=0
 
         tmpVisuel1=produit[5]
@@ -220,7 +220,7 @@ def EcrirePdfTrainDe2(locExcel):
     for produit in DsImpressionData:
         if (tmpVisuel1!=produit[5] or tmpVisuel2!=produit[7]) and i!=0:
             ListecompteurProduit.append(compteurProduit)
-            monPdf.cell(200 ,5, txt="------------------- {CompteurProduit} visuel {Visuel1}/{Visuel2} -------------------".format(CompteurProduit=compteurProduit,Visuel1=produit[5],Visuel2=produit[7]), ln=1, align="C")  
+            monPdf.cell(200 ,5, txt="------------------- {CompteurProduit} visuel {Visuel1}/{Visuel2} -------------------".format(CompteurProduit=compteurProduit,Visuel1=tmpVisuel1,Visuel2=tmpVisuel2), ln=1, align="C")  
             compteurProduit=0
 
         tmpVisuel1=produit[5]
@@ -287,7 +287,7 @@ def EcrirePdfTrainDe3(locExcel):
     for produit in DsImpressionData:
         if (tmpVisuel1!=produit[5] or tmpVisuel2!=produit[7] or tmpVisuel3!=produit[9]) and i!=0:
             ListecompteurProduit.append(compteurProduit) 
-            monPdf.cell(200 ,5, txt="-------------------{CompteurProduit} visuel {Visuel1}/{Visuel2}/{Visuel3}-------------------".format(CompteurProduit=compteurProduit,Visuel1=produit[5],Visuel2=produit[7],Visuel3=produit[9]), ln=1, align="C")
+            monPdf.cell(200 ,5, txt="-------------------{CompteurProduit} visuel {Visuel1}/{Visuel2}/{Visuel3}-------------------".format(CompteurProduit=compteurProduit,Visuel1=tmpVisuel1,Visuel2=tmpVisuel2,Visuel3=tmpVisuel3), ln=1, align="C")
             compteurProduit=0
 
         tmpVisuel1=produit[5]
@@ -355,7 +355,7 @@ def EcrirePdfTrainDe4(locExcel):
     for produit in DsImpressionData:
         if (tmpVisuel1!=produit[5] or tmpVisuel2!=produit[7] or tmpVisuel3!=produit[9] or tmpVisuel4!=produit[11]) and i!=0:
             ListecompteurProduit.append(compteurProduit)  
-            monPdf.cell(200 ,5, txt="-------------------{CompteurProduit} visuel {Visuel1}/{Visuel2}/{Visuel3}/{Visuel4}-------------------".format(CompteurProduit=compteurProduit,Visuel1=produit[5],Visuel2=produit[7],Visuel3=produit[9],Visuel4=produit[11]), ln=1, align="C")
+            monPdf.cell(200 ,5, txt="-------------------{CompteurProduit} visuel {Visuel1}/{Visuel2}/{Visuel3}/{Visuel4}-------------------".format(CompteurProduit=compteurProduit,Visuel1=tmpVisuel1,Visuel2=tmpVisuel2,Visuel3=tmpVisuel3,Visuel4=tmpVisuel4), ln=1, align="C")
             compteurProduit=0
 
         tmpVisuel1=produit[5]
@@ -427,7 +427,7 @@ def EcrirePdfTrainDe5(locExcel):
     for produit in DsImpressionData:
         if (tmpVisuel1!=produit[5] or tmpVisuel2!=produit[7] or tmpVisuel3!=produit[9] or tmpVisuel4!=produit[11] or tmpVisuel5!=produit[13]) and i!=0:
             ListecompteurProduit.append(compteurProduit)
-            monPdf.cell(200 ,5, txt="-------------------{CompteurProduit} visuel {Visuel1}/{Visuel2}/{Visuel3}/{Visuel4}/{Visuel5}-------------------".format(CompteurProduit=compteurProduit,Visuel1=produit[5],Visuel2=produit[7],Visuel3=produit[9],Visuel4=produit[11],Visuel5=produit[13]), ln=1, align="C")
+            monPdf.cell(200 ,5, txt="-------------------{CompteurProduit} visuel {Visuel1}/{Visuel2}/{Visuel3}/{Visuel4}/{Visuel5}-------------------".format(CompteurProduit=compteurProduit,Visuel1=tmpVisuel1,Visuel2=tmpVisuel2,Visuel3=tmpVisuel3,Visuel4=tmpVisuel4,Visuel5=tmpVisuel5), ln=1, align="C")
             compteurProduit=0
 
         tmpVisuel1=produit[5]
