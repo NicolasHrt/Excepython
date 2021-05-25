@@ -42,7 +42,7 @@ def OutputPdf():
 def TrierExcel(locExcel):
     # To open Workbook
     wb = xlrd.open_workbook(locExcel)
-    sheet = wb.sheet_by_index(0)
+    sheet = wb.sheet_by_index(2)
     sheet.cell_value(0, 0)
     DsimpresionData=[]
     errorChampVide()    
@@ -54,40 +54,30 @@ def TrierExcel(locExcel):
         AdressePanneau = row[int(ColonneAdresse.get())-1].value   
         Afficheur = row[int(ColonneAfficheur.get())-1].value
         Annonceur1 = row[int(ColonneAnnonceur1.get())-1].value
+        Annonceur2= row[int(ColonneAnnonceur2.get())-1].value
         Visuel1= row[int(ColonneVisuel1.get())-1].value
-       
-
-        if NumeroTrain.get()==1:
-            Produit=[TrainId,CommunePanneau,AdressePanneau,Afficheur,Annonceur1,Visuel1]
+        Visuel2= row[int(ColonneVisuel2.get())-1].value
 
         if NumeroTrain.get()==2:
-            Annonceur2= row[int(ColonneAnnonceur2.get())-1].value
-            Visuel2= row[int(ColonneVisuel2.get())-1].value
             Produit=[TrainId,CommunePanneau,AdressePanneau,Afficheur,Annonceur1,Visuel1,Annonceur2,Visuel2]
 
 
         if NumeroTrain.get()==3:
-            Annonceur2= row[int(ColonneAnnonceur2.get())-1].value
             Annonceur3= row[int(ColonneAnnonceur3.get())-1].value
-            Visuel2= row[int(ColonneVisuel2.get())-1].value
             Visuel3= row[int(ColonneVisuel3.get())-1].value
             Produit=[TrainId,CommunePanneau,AdressePanneau,Afficheur,Annonceur1,Visuel1,Annonceur2,Visuel2,Annonceur3,Visuel3]
 
         if NumeroTrain.get()==4:
-            Annonceur2= row[int(ColonneAnnonceur2.get())-1].value
             Annonceur3= row[int(ColonneAnnonceur3.get())-1].value
             Annonceur4= row[int(ColonneAnnonceur4.get())-1].value
-            Visuel2= row[int(ColonneVisuel2.get())-1].value
             Visuel3= row[int(ColonneVisuel3.get())-1].value
             Visuel4= row[int(ColonneVisuel4.get())-1].value
             Produit=[TrainId,CommunePanneau,AdressePanneau,Afficheur,Annonceur1,Visuel1,Annonceur2,Visuel2,Annonceur3,Visuel3,Annonceur4,Visuel4]
 
         if NumeroTrain.get()==5:
-            Annonceur2= row[int(ColonneAnnonceur2.get())-1].value
             Annonceur3= row[int(ColonneAnnonceur3.get())-1].value
             Annonceur4= row[int(ColonneAnnonceur4.get())-1].value
             Annonceur5= row[int(ColonneAnnonceur5.get())-1].value
-            Visuel2= row[int(ColonneVisuel2.get())-1].value
             Visuel3= row[int(ColonneVisuel3.get())-1].value
             Visuel4= row[int(ColonneVisuel4.get())-1].value
             Visuel5= row[int(ColonneVisuel5.get())-1].value
@@ -108,8 +98,8 @@ def errorChampVide():
     elif ColonneAfficheur.get()=="":messagebox.showerror("Error", "Vous n'avez pas rempli le champ Afficheur")
     elif ColonneAnnonceur1.get()=="":messagebox.showerror("Error", "Vous n'avez pas rempli le champ Annonceur 1")
     elif ColonneVisuel1.get()=="":messagebox.showerror("Error", "Vous n'avez pas rempli le champ Visuel 1")
-    elif (NumeroTrain.get()==2 or NumeroTrain.get()==3 or NumeroTrain.get()==4 or NumeroTrain.get()==5) and ColonneAnnonceur2.get()=="":messagebox.showerror("Error", "Vous n'avez pas rempli le champ Annonceur 2")
-    elif (NumeroTrain.get()==2 or NumeroTrain.get()==3 or NumeroTrain.get()==4 or NumeroTrain.get()==5) and ColonneVisuel2.get()=="":messagebox.showerror("Error", "Vous n'avez pas rempli le champ Visuel 2")
+    elif ColonneAnnonceur2.get()=="":messagebox.showerror("Error", "Vous n'avez pas rempli le champ Annonceur 2")
+    elif ColonneVisuel2.get()=="":messagebox.showerror("Error", "Vous n'avez pas rempli le champ Visuel 2")
     elif (NumeroTrain.get()==3 or NumeroTrain.get()==4 or NumeroTrain.get()==5)  and ColonneAnnonceur3.get()=="":messagebox.showerror("Error", "Vous n'avez pas rempli le champ Annonceur 3")
     elif (NumeroTrain.get()==3 or NumeroTrain.get()==4 or NumeroTrain.get()==5) and ColonneVisuel3.get()=="":messagebox.showerror("Error", "Vous n'avez pas rempli le champ Visuel 3")
     elif (NumeroTrain.get()==4 or NumeroTrain.get()==5) and ColonneAnnonceur4.get()=="":messagebox.showerror("Error", "Vous n'avez pas rempli le champ Annonceur 4")
@@ -119,8 +109,6 @@ def errorChampVide():
     else:pass
 
 def fonctionDeTrie(DsimpresionData):
-    if NumeroTrain.get()==1:  
-        DsimpresionDataTrier = sorted(DsimpresionData, key = operator.itemgetter(5))
 
     if NumeroTrain.get()==2:  
         DsimpresionDataTrier = sorted(DsimpresionData, key = operator.itemgetter(5,7))
@@ -134,80 +122,14 @@ def fonctionDeTrie(DsimpresionData):
     if NumeroTrain.get()==5:  
         DsimpresionDataTrier = sorted(DsimpresionData, key = operator.itemgetter(5,7,9,11,13))
     return(DsimpresionDataTrier)
-
-def EcrirePdfTrainDe1(locExcel):
-    tmpVisuel1=""
-    DsImpressionData=TrierExcel(locExcel)
-    monPdf = FPDF()
-    monPdf.add_page()
-    monPdf.set_font("Arial", size=20)
-    monPdf.cell(200 ,5, txt="Liste recapitulative de toutes les combinaisons de visuels", ln=1, align="C") 
-    monPdf.cell(200 ,10, txt="", ln=2, align="C") 
-    monPdf.set_font("Arial", size=10) 
-    compteurPage=0
-    compteurPageProduit=0
-
-    compteurProduit=0
-    ListecompteurProduit=[]
-    i=0
-
-    #tableau des différentes combinaisons de visuel
-    for produit in DsImpressionData:
-        if tmpVisuel1!=produit[5] and i!=0:
-            ListecompteurProduit.append(compteurProduit)
-            monPdf.cell(200 ,5, txt="------------------- {CompteurProduit} visuel {Visuel1} -------------------".format(CompteurProduit=compteurProduit,Visuel1=produit[5]), ln=1, align="C")  
-            compteurProduit=0
-
-        tmpVisuel1=produit[5]
-        compteurProduit+=1
-        i+=1
-        if i==len(DsImpressionData):
-            ListecompteurProduit.append(compteurProduit)  
-            monPdf.cell(200 ,5, txt="------------------- {CompteurProduit} visuel {Visuel1} -------------------".format(CompteurProduit=compteurProduit,Visuel1=produit[5]), ln=1, align="C")  
-            monPdf.add_page()
-    j=0
-
-    for ligne in DsImpressionData:
-
-        #si la conbinaison de visuel est différente alors saute de page
-        if tmpVisuel1!=ligne[5] and j!=0:
-            monPdf.cell(200 ,5, txt="-------------------{CompteurProduit} visuel {Visuel1}-------------------".format(CompteurProduit=ListecompteurProduit[compteurPageProduit],Visuel1=tmpVisuel1), ln=1, align="C")
-            compteurPage=0
-            compteurPageProduit+=1
-            monPdf.add_page()
-        
-        monPdf.cell(200, 5, txt= "{TrainId}".format(TrainId=ligne[0]), ln=1, align="L")
-        monPdf.cell(200, 5, txt= "{CommunePanneau}".format(CommunePanneau=ligne[1]), ln=1, align="L")
-        monPdf.cell(200, 5, txt= "{AdressePanneau}".format(AdressePanneau=ligne[2]), ln=1, align="L")
-        monPdf.cell(200, 5, txt= "{Afficheur}".format(Afficheur=ligne[3]), ln=1, align="L")
-        monPdf.cell(200, 5, txt= "Annonceur1 : {Annonceur1} Visuel1 : {Visuel1}".format(Annonceur1=ligne[4],Visuel1=ligne[5]), ln=1, align="L")
-        monPdf.cell(200, 5, txt= "", ln=1, align="L")
-        compteurPage+=1
-        tmpVisuel1=ligne[5]
-        j+=1
-
-        #6 produit par page
-        if compteurPage==6:
-            monPdf.cell(200 ,5, txt="------------------- {CompteurProduit} visuel {Visuel1} -------------------".format(CompteurProduit=ListecompteurProduit[compteurPageProduit],Visuel1=ligne[5]), ln=1, align="C")
-            compteurPage=0
-            monPdf.add_page()
-        
-        #Le nombre de produit de la conbinaison actuel pour la dernière page
-        if j==len(DsImpressionData):
-            monPdf.cell(200 ,5, txt="------------------- {CompteurProduit} visuel {Visuel1} -------------------".format(CompteurProduit=ListecompteurProduit[compteurPageProduit],Visuel1=ligne[5]), ln=1, align="C")
      
-    monPdf.output("{CheminPdf}/{nomDuFichier}.pdf".format(nomDuFichier=textboxfile.get(),CheminPdf=CheminPdf))
-
 def EcrirePdfTrainDe2(locExcel):
     tmpVisuel1=""
     tmpVisuel2=""
     DsImpressionData=TrierExcel(locExcel)
     monPdf = FPDF()
     monPdf.add_page()
-    monPdf.set_font("Arial", size=20)
-    monPdf.cell(200 ,5, txt="Liste recapitulative de toutes les combinaisons de visuels", ln=1, align="C") 
-    monPdf.cell(200 ,10, txt="", ln=2, align="C") 
-    monPdf.set_font("Arial", size=10) 
+    monPdf.set_font("Arial", size=10)
     compteurPage=0
     compteurPageProduit=0
 
@@ -217,8 +139,7 @@ def EcrirePdfTrainDe2(locExcel):
     #tableau des différentes combinaisons de visuel
     for produit in DsImpressionData:
         if (tmpVisuel1!=produit[5] or tmpVisuel2!=produit[7]) and i!=0:
-            ListecompteurProduit.append(compteurProduit)
-            monPdf.cell(200 ,5, txt="------------------- {CompteurProduit} visuel {Visuel1}/{Visuel2} -------------------".format(CompteurProduit=compteurProduit,Visuel1=produit[5],Visuel2=produit[7]), ln=1, align="C")  
+            ListecompteurProduit.append(compteurProduit)  
             compteurProduit=0
 
         tmpVisuel1=produit[5]
@@ -227,8 +148,6 @@ def EcrirePdfTrainDe2(locExcel):
         i+=1
         if i==len(DsImpressionData):
             ListecompteurProduit.append(compteurProduit)  
-            monPdf.cell(200 ,5, txt="------------------- {CompteurProduit} visuel {Visuel1}/{Visuel2} -------------------".format(CompteurProduit=compteurProduit,Visuel1=produit[5],Visuel2=produit[7]), ln=1, align="C")  
-            monPdf.add_page()
     j=0
 
     for ligne in DsImpressionData:
@@ -238,9 +157,9 @@ def EcrirePdfTrainDe2(locExcel):
             monPdf.cell(200 ,5, txt="-------------------{CompteurProduit} visuel {Visuel1}/{Visuel2}-------------------".format(CompteurProduit=ListecompteurProduit[compteurPageProduit],Visuel1=tmpVisuel1,Visuel2=tmpVisuel2), ln=1, align="C")
             compteurPage=0
             compteurPageProduit+=1
+        
             monPdf.add_page()
 
-        
         monPdf.cell(200, 5, txt= "{TrainId}".format(TrainId=ligne[0]), ln=1, align="L")
         monPdf.cell(200, 5, txt= "{CommunePanneau}".format(CommunePanneau=ligne[1]), ln=1, align="L")
         monPdf.cell(200, 5, txt= "{AdressePanneau}".format(AdressePanneau=ligne[2]), ln=1, align="L")
@@ -272,9 +191,6 @@ def EcrirePdfTrainDe3(locExcel):
     DsImpressionData=TrierExcel(locExcel)
     monPdf = FPDF()
     monPdf.add_page()
-    monPdf.set_font("Arial", size=20)
-    monPdf.cell(200 ,5, txt="Liste recapitulative de toutes les combinaisons de visuels", ln=1, align="C") 
-    monPdf.cell(200 ,10, txt="", ln=2, align="C") 
     monPdf.set_font("Arial", size=10)
     compteurPage=0
     compteurPageProduit=0
@@ -284,8 +200,7 @@ def EcrirePdfTrainDe3(locExcel):
     i=0
     for produit in DsImpressionData:
         if (tmpVisuel1!=produit[5] or tmpVisuel2!=produit[7] or tmpVisuel3!=produit[9]) and i!=0:
-            ListecompteurProduit.append(compteurProduit) 
-            monPdf.cell(200 ,5, txt="-------------------{CompteurProduit} visuel {Visuel1}/{Visuel2}/{Visuel3}-------------------".format(CompteurProduit=compteurProduit,Visuel1=produit[5],Visuel2=produit[7],Visuel3=produit[9]), ln=1, align="C")
+            ListecompteurProduit.append(compteurProduit)  
             compteurProduit=0
 
         tmpVisuel1=produit[5]
@@ -294,9 +209,7 @@ def EcrirePdfTrainDe3(locExcel):
         compteurProduit+=1
         i+=1
         if i==len(DsImpressionData):
-            ListecompteurProduit.append(compteurProduit)
-            monPdf.cell(200 ,5, txt="-------------------{CompteurProduit} visuel {Visuel1}/{Visuel2}/{Visuel3}-------------------".format(CompteurProduit=compteurProduit,Visuel1=produit[5],Visuel2=produit[7],Visuel3=produit[9]), ln=1, align="C")
-            monPdf.add_page()
+            ListecompteurProduit.append(compteurProduit)  
     j=0
 
     for ligne in DsImpressionData:
@@ -340,9 +253,6 @@ def EcrirePdfTrainDe4(locExcel):
     DsImpressionData=TrierExcel(locExcel)
     monPdf = FPDF()
     monPdf.add_page()
-    monPdf.set_font("Arial", size=20)
-    monPdf.cell(200 ,5, txt="Liste recapitulative de toutes les combinaisons de visuels", ln=1, align="C") 
-    monPdf.cell(200 ,10, txt="", ln=2, align="C") 
     monPdf.set_font("Arial", size=10)
     compteurPage=0
     compteurPageProduit=0
@@ -353,7 +263,6 @@ def EcrirePdfTrainDe4(locExcel):
     for produit in DsImpressionData:
         if (tmpVisuel1!=produit[5] or tmpVisuel2!=produit[7] or tmpVisuel3!=produit[9] or tmpVisuel4!=produit[11]) and i!=0:
             ListecompteurProduit.append(compteurProduit)  
-            monPdf.cell(200 ,5, txt="-------------------{CompteurProduit} visuel {Visuel1}/{Visuel2}/{Visuel3}/{Visuel4}-------------------".format(CompteurProduit=compteurProduit,Visuel1=produit[5],Visuel2=produit[7],Visuel3=produit[9],Visuel4=produit[11]), ln=1, align="C")
             compteurProduit=0
 
         tmpVisuel1=produit[5]
@@ -363,9 +272,7 @@ def EcrirePdfTrainDe4(locExcel):
         compteurProduit+=1
         i+=1
         if i==len(DsImpressionData):
-            ListecompteurProduit.append(compteurProduit) 
-            monPdf.cell(200 ,5, txt="-------------------{CompteurProduit} visuel {Visuel1}/{Visuel2}/{Visuel3}/{Visuel4}-------------------".format(CompteurProduit=compteurProduit,Visuel1=produit[5],Visuel2=produit[7],Visuel3=produit[9],Visuel4=produit[11]), ln=1, align="C")
-            monPdf.add_page() 
+            ListecompteurProduit.append(compteurProduit)  
     j=0
 
     for ligne in DsImpressionData:
@@ -412,9 +319,6 @@ def EcrirePdfTrainDe5(locExcel):
     DsImpressionData=TrierExcel(locExcel)
     monPdf = FPDF()
     monPdf.add_page()
-    monPdf.set_font("Arial", size=20)
-    monPdf.cell(200 ,5, txt="Liste recapitulative de toutes les combinaisons de visuels", ln=1, align="C") 
-    monPdf.cell(200 ,10, txt="", ln=2, align="C") 
     monPdf.set_font("Arial", size=10)
     compteurPage=0
     compteurPageProduit=0
@@ -424,8 +328,7 @@ def EcrirePdfTrainDe5(locExcel):
     i=0
     for produit in DsImpressionData:
         if (tmpVisuel1!=produit[5] or tmpVisuel2!=produit[7] or tmpVisuel3!=produit[9] or tmpVisuel4!=produit[11] or tmpVisuel5!=produit[13]) and i!=0:
-            ListecompteurProduit.append(compteurProduit)
-            monPdf.cell(200 ,5, txt="-------------------{CompteurProduit} visuel {Visuel1}/{Visuel2}/{Visuel3}/{Visuel4}/{Visuel5}-------------------".format(CompteurProduit=compteurProduit,Visuel1=produit[5],Visuel2=produit[7],Visuel3=produit[9],Visuel4=produit[11],Visuel5=produit[13]), ln=1, align="C")
+            ListecompteurProduit.append(compteurProduit)  
             compteurProduit=0
 
         tmpVisuel1=produit[5]
@@ -436,10 +339,7 @@ def EcrirePdfTrainDe5(locExcel):
         compteurProduit+=1
         i+=1
         if i==len(DsImpressionData):
-            ListecompteurProduit.append(compteurProduit)
-            monPdf.cell(200 ,5, txt="-------------------{CompteurProduit} visuel {Visuel1}/{Visuel2}/{Visuel3}/{Visuel4}/{Visuel5}-------------------".format(CompteurProduit=compteurProduit,Visuel1=produit[5],Visuel2=produit[7],Visuel3=produit[9],Visuel4=produit[11],Visuel5=produit[13]), ln=1, align="C")
-            monPdf.add_page()
-              
+            ListecompteurProduit.append(compteurProduit)  
     j=0
 
     for ligne in DsImpressionData:
@@ -490,10 +390,7 @@ def fonction_Principale(locExcel):
     elif nomdufichier=="":
         messagebox.showerror("Error", "Vous n'avez rentré de nom pour le fichier")
     
-    elif NumeroTrain.get()==1:
-        EcrirePdfTrainDe1(locExcel)
-        messagebox.showinfo("Succes", "Votre fichier a été exporté avec succès")
-        print("Train de 1")
+
     elif NumeroTrain.get()==2:
         EcrirePdfTrainDe2(locExcel)
         messagebox.showinfo("Succes", "Votre fichier a été exporté avec succès")
@@ -581,7 +478,6 @@ label_TrainRadio = Label(window,
                             width = 50, height = 4,
                             fg = "black")  
 
-checkbox0 = ttk.Radiobutton(window, text='train de 1', variable=NumeroTrain, value=1)
 checkbox1 = ttk.Radiobutton(window, text='train de 2', variable=NumeroTrain, value=2)
 checkbox2 = ttk.Radiobutton(window, text='train de 3', variable=NumeroTrain, value=3)
 checkbox3 = ttk.Radiobutton(window, text='train de 4', variable=NumeroTrain, value=4)
@@ -710,13 +606,12 @@ textboxfile.grid(column=0, row=5)
 
 label_TrainRadio.grid(column=0, row=6)
 
-checkbox0.grid(column=0, row=7)
-checkbox1.grid(column=0, row=8)
-checkbox2.grid(column=0, row=9)
-checkbox3.grid(column=0, row=10)
-checkbox4.grid(column=0, row=11)
+checkbox1.grid(column=0, row=7)
+checkbox2.grid(column=0, row=8)
+checkbox3.grid(column=0, row=9)
+checkbox4.grid(column=0, row=10)
 
-button_Exporter.grid(column = 0,row = 12,ipady=20, ipadx=20)
+button_Exporter.grid(column = 0,row = 11,ipady=20, ipadx=20)
 
 label_ColonneTrainId.grid(column=1,row=0)
 ColonneTrainId.grid(column=1,row=1)
