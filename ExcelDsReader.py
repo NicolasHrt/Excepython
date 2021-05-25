@@ -1,5 +1,6 @@
 # Reading an excel file using Python
 from ast import Num
+from os import name
 import xlrd
 import operator
 from fpdf import FPDF
@@ -42,7 +43,8 @@ def OutputPdf():
 def TrierExcel(locExcel):
     # To open Workbook
     wb = xlrd.open_workbook(locExcel)
-    sheet = wb.sheet_by_index(0)
+    sheet = wb.sheet_by_index(int(NumeroFeuille.get())-1)
+    print(sheet.name)
     sheet.cell_value(0, 0)
     DsimpresionData=[]
     errorChampVide()    
@@ -587,6 +589,13 @@ checkbox2 = ttk.Radiobutton(window, text='train de 3', variable=NumeroTrain, val
 checkbox3 = ttk.Radiobutton(window, text='train de 4', variable=NumeroTrain, value=4)
 checkbox4 = ttk.Radiobutton(window, text='train de 5', variable=NumeroTrain, value=5)
 
+label_NumeroFeuille = Label(window,
+                            text = "Numero de la feuille : ",
+                            width = 25 , height = 4,
+                            fg = "black")  
+NumeroFeuille= ttk.Entry(window, width=10, justify='center')
+NumeroFeuille.insert(-1, '1')
+
 button_Exporter = ttk.Button(window,
                     text = "Exporter",
                     command = lambda: fonction_Principale(locExcel))
@@ -716,7 +725,10 @@ checkbox2.grid(column=0, row=9)
 checkbox3.grid(column=0, row=10)
 checkbox4.grid(column=0, row=11)
 
-button_Exporter.grid(column = 0,row = 12,ipady=20, ipadx=20)
+label_NumeroFeuille.grid(column=0,row=12)
+NumeroFeuille.grid(column=0,row=13)
+
+button_Exporter.grid(column = 0,row = 14,ipady=20, ipadx=20)
 
 label_ColonneTrainId.grid(column=1,row=0)
 ColonneTrainId.grid(column=1,row=1)
